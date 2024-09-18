@@ -1,5 +1,7 @@
 # SmartTagGPT: Automating Reminder Tagging with a Fine-Tuned GPT Model
 
+![SmartTagGPT Overview](images/overview_image.png)
+
 ## Overview
 
 **SmartTagGPT** is a project that automates the tedious task of tagging reminders in Apple Reminders using a GPT model, with an option to fine-tune the model for more personalized tag suggestions. By fine-tuning the model on your personal reminder data, you can improve the accuracy of the suggested tags, making the system more tailored to your specific needs.
