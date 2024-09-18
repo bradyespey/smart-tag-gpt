@@ -111,25 +111,6 @@ You can schedule this Shortcut to run every hour using `crontab`. Here’s how t
 
 ---
 
-## Screenshots of the Workflow
-
-1. **Find Tagged Reminders**  
-   ![Find Tagged Reminders](images/find_tagged_reminders.png)
-
-2. **Export Tagged Reminders**  
-   ![Export Tagged Reminders](images/export_tagged_reminders.png)
-
-3. **Find Untagged Reminders**  
-   ![Find Untagged Reminders](images/find_untagged_reminders.png)
-
-4. **Prepare Tagged Reminders**  
-   ![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
-
-5. **Tag Untagged Reminders**  
-   ![Tag Untagged Reminders](images/tag_untagged_reminders.png)
-
----
-
 ## Setting Up the API Key and Model
 
 Before running the Python scripts, you will need to store your OpenAI API key and fine-tuning job/model information in secure JSON files.
