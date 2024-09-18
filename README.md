@@ -1,6 +1,8 @@
 # SmartTagGPT: Automating Reminder Tagging with a Fine-Tuned GPT Model
 
-<img src="images/overview_image.webp" alt="SmartTagGPT Overview" width="400"/>
+<p align="center">
+  <img src="images/overview_image.webp" alt="SmartTagGPT Overview" width="300"/>
+</p>
 
 ## Overview
 
