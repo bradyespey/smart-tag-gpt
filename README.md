@@ -84,13 +84,13 @@ Once fine-tuning is complete (or if you're using the base model), create an Appl
 
 #### Shortcut Workflow:
 1. Find reminders without tags using **Apple Shortcuts**:
-   - ![Find Untagged Reminders](images/find_untagged_reminders.png)
+    ![Find Untagged Reminders](images/find_untagged_reminders.png)
    
 2. Send these reminders to the GPT model (either fine-tuned or base) for tag suggestions.
-   - ![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
+   ![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
 
 3. Automatically tag the reminders with the suggested tag:
-   - ![Tag Untagged Reminders](images/tag_untagged_reminders.png)
+![Tag Untagged Reminders](images/tag_untagged_reminders.png)
 
 #### Automation:
 You can schedule this Shortcut to run every hour using `crontab`. Here’s how to automate it:
