@@ -31,9 +31,9 @@ This step exports your reminders with their tags into a CSV file, which can late
 
 #### Shortcut Workflow
 1. Find reminders with tags using the **Apple Shortcuts** app.
-   - ![Find Tagged Reminders](images/find_tagged_reminders.png)
+![Find Tagged Reminders](images/find_tagged_reminders.png)
 2. Export these reminders to a `.csv` file.
-   - ![Export Tagged Reminders](images/export_tagged_reminders.png)
+![Export Tagged Reminders](images/export_tagged_reminders.png)
 
 The exported file will be saved as `exported_tagged_reminders.csv` in a location you specify.
 
@@ -84,10 +84,10 @@ Once fine-tuning is complete (or if you're using the base model), create an Appl
 
 #### Shortcut Workflow:
 1. Find reminders without tags using **Apple Shortcuts**:
-    ![Find Untagged Reminders](images/find_untagged_reminders.png)
+![Find Untagged Reminders](images/find_untagged_reminders.png)
    
 2. Send these reminders to the GPT model (either fine-tuned or base) for tag suggestions.
-   ![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
+![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
 
 3. Automatically tag the reminders with the suggested tag:
 ![Tag Untagged Reminders](images/tag_untagged_reminders.png)
