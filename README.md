@@ -1,4 +1,5 @@
-# SmartTagGPT: Automating Reminder Tagging with a Fine-Tuned GPT Model
+# SmartTagGPT:
+# Automating Reminder Tagging with a Fine-Tuned GPT Model
 
 ## Overview
 
