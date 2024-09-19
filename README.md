@@ -116,7 +116,7 @@ You can schedule this Shortcut to run every hour using `crontab`. Here’s how t
 Before running the Python scripts, you will need to store your OpenAI API key and fine-tuning job/model information in secure JSON files.
 
 ### API Key
-1. Create a file named `openai_api_key.json` in `/Users/bradyespey/Projects/Files/Reminders/`.
+1. Create a file named `openai_api_key.json` in `/Users/username/Projects/Files/Reminders/`.
 2. Add your API key to the file:
    ```json
    {
