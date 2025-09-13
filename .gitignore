@@ -1,0 +1,85 @@
+# Build outputs
+.vite/
+build/
+dist/
+dist-ssr/
+*.local
+
+# Credentials and secrets
+*cookies*.json
+*credentials*.json
+*secrets.json
+*secret.json
+*token*.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Dependencies
+lerna-debug.log*
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+!.vscode/extensions.json
+*~
+*.njsproj
+*.ntvs*
+*.sln
+*.suo
+*.sw?
+
+# Environment variables
+.env
+.env.*
+*.env.*
+!.env.example
+
+# Firebase
+.firebase/
+firebase-debug.*.log
+firebase-debug.log
+
+# Logs
+.log*
+*.log
+logs/
+
+# Netlify
+.netlify/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+._*
+Thumbs.db
+ehthumbs.db
+
+# Project-specific directories
+docs/
+flask/
+gas/
+old/
+other/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+env/
+venv/
+
+# Temporary files
+*.temp
+*.tmp

@@ -1,4 +1,6 @@
-# Automatimatically Add Tags to Reminders with Fine-Tuned GPT Model Suggestions
+# SmartTagGPT
+
+**Scope**: This README replaces prior selected overview docs
 
 <p align="center">
   <img src="images/overview_image.webp" alt="SmartTagGPT Overview" width="300"/>
@@ -6,148 +8,141 @@
 
 ## Overview
 
-**SmartTagGPT** is a project that automates the tedious task of tagging reminders in Apple Reminders using a GPT model, with an option to fine-tune the model for more personalized tag suggestions. By fine-tuning the model on your personal reminder data, you can improve the accuracy of the suggested tags, making the system more tailored to your specific needs.
+An automated system that intelligently tags Apple Reminders using OpenAI's GPT models with optional fine-tuning for personalized accuracy. The project exports existing tagged reminders, converts them to training data, fine-tunes a custom GPT model, and automatically applies tags to new untagged reminders via Apple Shortcuts automation running hourly.
 
-This project consists of three main parts:
+## Live and Admin
 
-1. **Exporting tagged reminders to CSV** using Apple Shortcuts, which prepares the data for fine-tuning.
-2. **Preparing the fine-tuning model** with a JSONL file generated from the exported reminders. This step fine-tunes GPT to match your reminder tagging preferences.
-3. **Creating a Shortcut automation** that runs every hour to tag untagged reminders using either the fine-tuned GPT model or the base GPT-3.5-turbo model.
+- **Apple Shortcuts**: Automated workflows in iOS Shortcuts app
+- **OpenAI Dashboard**: https://platform.openai.com/fine-tuning for model management
+- **Cron Logs**: `/Users/brady/Projects/SmartTagGPT/logs/reminders_cron.log`
+- **API Usage**: Monitor at https://platform.openai.com/usage
 
-If you don’t want to fine-tune the model, you can skip the second step and directly automate the tagging using the base ChatGPT model.
+## Tech Stack
 
-## Features
-- **Personalized Reminder Tagging**: Fine-tune GPT on your personal reminder data for better tag suggestions.
-- **Automated Tagging**: Automatically tags untagged reminders every hour using the OpenAI API.
-- **Flexible Configuration**: Choose between using the base GPT model or a fine-tuned model.
+- **Automation**: Apple Shortcuts for iOS integration
+- **AI Model**: OpenAI GPT-3.5-turbo with fine-tuning capability
+- **Data Processing**: Python scripts for CSV/JSONL conversion
+- **Scheduling**: macOS crontab for hourly automation
+- **Storage**: Local JSON files for secure API key management
 
-## Prerequisites
-Before starting, ensure you have access to the OpenAI API and have your API key ready. You will also need:
-- **Apple Shortcuts**: To export and automate reminder tagging.
-- **Python**: To run the scripts for converting data and fine-tuning the model.
-- **[OpenAI API Key](https://platform.openai.com/signup)**: Store securely in your project files as described below.
+## Quick Start
 
-## Project Workflow
-
-### 1. Exporting Tagged Reminders to CSV Using Apple Shortcuts
-
-This step exports your reminders with their tags into a CSV file, which can later be used to fine-tune the GPT model.
-
-#### Shortcut Workflow
-1. Find reminders with tags using the **Apple Shortcuts** app.
-![Find Tagged Reminders](images/find_tagged_reminders.png)
-2. Export these reminders to a `.csv` file.
-![Export Tagged Reminders](images/export_tagged_reminders.png)
-
-The exported file will be saved as `exported_tagged_reminders.csv` in a location you specify.
-
----
-
-### 2. Converting CSV to JSONL for Fine-Tuning
-
-Once your reminders have been exported to CSV, you need to convert the file into JSONL format to prepare it for fine-tuning with GPT.
-
-#### Steps:
-1. Locate the exported CSV (`exported_tagged_reminders.csv`).
-2. Run the `convert_csv_to_jsonl.py` script to generate the JSONL file:
-   ```bash
-   python convert_csv_to_jsonl.py
-   ```
-3. This will output a `fine_tune_dataset.jsonl` file that contains the reminder titles and their respective tags, formatted for fine-tuning.
-
-#### Example JSONL Entry:
-```json
-{"messages": [{"role": "user", "content": "Reminder Title"}, {"role": "assistant", "content": "#Tag"}]}
+```bash
+git clone https://github.com/bradyespey/SmartTagGPT
+cd SmartTagGPT
+# Set up API key in /Users/bradyespey/Projects/Files/Reminders/openai_api_key.json
+python convert_csv_to_jsonl.py
+python fine_tuning.py
 ```
 
----
+## Environment
 
-### 3. Fine-Tuning a GPT Model with Tagged Reminders
+Required files for API access:
 
-Fine-tuning GPT will help you achieve more accurate tag suggestions, aligning with your personal tagging habits.
+```bash
+# API Key
+/Users/bradyespey/Projects/Files/Reminders/openai_api_key.json
+# Model ID (after fine-tuning)
+/Users/bradyespey/Projects/Files/Reminders/openai_model_id.json
+# Job ID (for status checking)
+/Users/bradyespey/Projects/Files/Reminders/openai_job_id.json
+```
 
-#### Fine-Tuning Steps:
-1. Upload your dataset by running the `fine_tuning.py` script:
-   ```bash
-   python fine_tuning.py
-   ```
-   - This uploads the `fine_tune_dataset.jsonl` file to OpenAI and starts the fine-tuning process.
-2. Monitor the status of the fine-tuning job using the `check_fine_tune_status.py` script:
-   ```bash
-   python check_fine_tune_status.py
-   ```
-   - The script will output the job status and notify you once the fine-tuning is complete.
+Example `.env.example`:
+```json
+{
+  "api_key": "YOUR_OPENAI_API_KEY",
+  "model_id": "ft:gpt-3.5-turbo-0125:YOUR_ORG::YOUR_MODEL_ID",
+  "job_id": "ftjob-YOUR_JOB_ID"
+}
+```
 
-> **Note:** Fine-tuning is optional. If you choose to skip this step, you can use the base GPT model in the next step.
+## Run Modes
 
----
+- **Development**: Test individual Python scripts manually for debugging
+- **Production**: Automated hourly execution via crontab scheduling
+- **Fine-tuning**: Optional model training mode using personal reminder data
 
-### 4. Automatically Tagging Untagged Reminders Using the Fine-Tuned Model
+## Scripts and Ops
 
-Once fine-tuning is complete (or if you're using the base model), create an Apple Shortcut to automatically tag untagged reminders.
+- **Data Export**: Apple Shortcuts → "Export Tagged Reminders" → CSV output
+- **Data Conversion**: `python convert_csv_to_jsonl.py` — CSV to JSONL format
+- **Model Training**: `python fine_tuning.py` — Upload dataset and start fine-tuning
+- **Status Check**: `python check_fine_tune_status.py` — Monitor training progress
+- **Auto-Tagging**: Apple Shortcuts → "Add Tags to Reminders" (hourly via cron)
 
-#### Shortcut Workflow:
-1. Find reminders without tags using **Apple Shortcuts**:
-![Find Untagged Reminders](images/find_untagged_reminders.png)
-   
-2. Send these reminders to the GPT model (either fine-tuned or base) for tag suggestions.
-![Prepare Tagged Reminders](images/prepare_tagged_reminders.png)
+### Cron Automation
+```bash
+# Edit crontab
+crontab -e
 
-3. Automatically tag the reminders with the suggested tag:
-![Tag Untagged Reminders](images/tag_untagged_reminders.png)
+# Add hourly automation
+0 * * * * /usr/bin/shortcuts run "Add Tags to Reminders" >> /Users/brady/Projects/SmartTagGPT/logs/reminders_cron.log 2>&1
+59 23 * * 1 echo "" > /Users/brady/Projects/SmartTagGPT/logs/reminders_cron.log
+```
 
-#### Automation:
-You can schedule this Shortcut to run every hour using `crontab`. Here’s how to automate it:
+## Deploy
 
-1. Open the terminal and edit your `crontab` file:
-   ```bash
-   crontab -e
-   ```
+- **Local Execution**: Python scripts run locally with API calls to OpenAI
+- **Apple Shortcuts**: Deployed directly to iOS Shortcuts app
+- **Automation**: Crontab scheduling for hands-free operation
+- **No hosting required** — fully local automation system
 
-2. Add the following line to schedule the Shortcut to run every hour:
-   ```bash
-   0 * * * * /usr/bin/shortcuts run "Add Tags to Reminders"
-   ```
+## App Pages / Routes
 
----
+### Apple Shortcuts Workflows
+- **Export Tagged Reminders** — Finds tagged reminders, exports to CSV format
+- **Add Tags to Reminders** — Processes untagged reminders via GPT API, applies suggested tags
 
-## Setting Up the API Key and Model
+### Python Scripts
+- **convert_csv_to_jsonl.py** — Data preprocessing for fine-tuning
+- **fine_tuning.py** — Model training orchestration
+- **check_fine_tune_status.py** — Training progress monitoring
+- **fine_tuning_request_test.py** — API testing and validation
 
-Before running the Python scripts, you will need to store your OpenAI API key and fine-tuning job/model information in secure JSON files.
+## Directory Map
 
-### API Key
-1. Create a file named `openai_api_key.json` in `/Users/username/Projects/Files/Reminders/`.
-2. Add your API key to the file:
-   ```json
-   {
-     "api_key": "your-openai-api-key"
-   }
-   ```
+```
+SmartTagGPT/
+├── images/                     # Workflow screenshots and documentation
+│   ├── overview_image.webp     # Project overview visual
+│   ├── find_tagged_reminders.png
+│   ├── export_tagged_reminders.png
+│   └── tag_untagged_reminders.png
+├── logs/
+│   └── reminders_cron.log      # Automation execution logs
+├── other/                      # Temporary files and exports
+├── convert_csv_to_jsonl.py     # Data format conversion
+├── fine_tuning.py              # Model training script
+├── check_fine_tune_status.py   # Training progress monitoring
+├── fine_tuning_request_test.py # API testing utilities
+└── LICENSE                     # Project license
+```
 
-### Model ID
-1. Create a file named `openai_model_id.json` if you're using a fine-tuned model:
-   ```json
-   {
-     "model_id": "ft:gpt-3.5-turbo-0125:michael-house::B7hT2kXQ"
-   }
-   ```
+## Troubleshooting
 
-### Fine-Tuning Job ID
-1. If you want to check the fine-tuning job status, create a file named `openai_job_id.json`:
-   ```json
-   {
-     "job_id": "ftjob-X9vP3L7QmkH8RbJyT4Zn1cKD"
-   }
-   ```
+### Common Issues
 
----
+1. **API Key Not Found**
+   - Verify JSON files exist in `/Users/bradyespey/Projects/Files/Reminders/`
+   - Check file permissions and JSON syntax
+   - Ensure API key is valid and has sufficient credits
 
-## Conclusion
+2. **Shortcuts Not Running**
+   - Check iOS Shortcuts app permissions for Reminders access
+   - Verify crontab syntax and shortcuts command path
+   - Test shortcuts manually before automation
 
-This project offers a highly customizable approach to automating the tagging of reminders in Apple Reminders. By leveraging a fine-tuned GPT model, **SmartTagGPT** improves the accuracy of tag suggestions, making your reminder organization more efficient and personalized. You can either fine-tune the model for your own use case or use the base GPT model to get started right away.
+3. **Fine-Tuning Failures**
+   - Ensure JSONL format is correct with proper message structure
+   - Check dataset size meets OpenAI minimum requirements
+   - Monitor API usage limits and billing status
 
----
+4. **Cron Jobs Not Executing**
+   - Verify crontab is properly configured with `crontab -l`
+   - Check system permissions for shortcuts command
+   - Review log files for error messages
 
-### Helpful Links
-- [OpenAI API Documentation](https://beta.openai.com/docs/)
-- [Create OpenAI API Key](https://platform.openai.com/signup)
+## AI Handoff
+
+This is a Python + Apple Shortcuts automation system for AI-powered reminder tagging. Focus on the data pipeline (CSV → JSONL → fine-tuning) and the Shortcuts integration for iOS Reminders. The system uses OpenAI's fine-tuning API with secure local JSON file storage for credentials.
